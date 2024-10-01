@@ -3,14 +3,12 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 
-void err(char *str)
-{
+void err(char *str) {
 	while (*str)
 		write(2, str++, 1);
 }
 
-int cd(char **av, int i)
-{
+int cd(char **av, int i) {
 	if (i != 2)
 		return err("error: cd: bad arguments\n"), 1;
 	if (chdir(av[1]) == -1)
@@ -18,25 +16,21 @@ int cd(char **av, int i)
 	return 0;
 }
 
-void set_pipe(int has_pipe, int *fd, int end)
-{
+void set_pipe(int has_pipe, int *fd, int end) {
 	if (has_pipe && (dup2(fd[end], end) == -1 || close(fd[0]) == -1 || close(fd[1]) == -1))
 		err("error: fatal\n"), exit(1);
 }
 
-int	exec(char **av, int i, char **envp)
-{
+int	exec(char **av, int i, char **envp) {
 	int has_pipe, fd[2], pid, status;
 	has_pipe = av[i] && !strcmp(av[i], "|");
-
 	if (!has_pipe && !strcmp(*av, "cd"))
 		return cd(av, i);
 	if (has_pipe && pipe(fd) == -1)
 		err("error: fatal\n"), exit(1);
 	if ((pid = fork()) == -1)
 		err("error: fatal\n"), exit(1);
-	if (!pid)
-	{
+	if (!pid) {
 		av[i] = 0;
 		set_pipe(has_pipe, fd, 1);
 		if (!strcmp(*av, "cd"))
@@ -49,13 +43,10 @@ int	exec(char **av, int i, char **envp)
 	return WIFEXITED(status) && WEXITSTATUS(status);
 }
 
-int main(int ac, char **av, char **envp)
-{
+int main(int ac, char **av, char **envp) {
 	(void)ac;
 	int i = 0, status = 0;
-
-	while (av[i])
-	{
+	while (av[i]) {
 		av += i + 1;
 		i = 0;
 		while (av[i] && strcmp(av[i], "|") && strcmp(av[i], ";"))
