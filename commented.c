@@ -12,14 +12,14 @@ int err(char *str)
 }
 
 // Function to change the current working directory
-int cd(char **argv, int i)
+int cd(char **av, int i)
 {
     // If the number of arguments is not 2, print error and exit
     if (i != 2)
         return err("error: cd: bad arguments\n"), 1;
     // If changing the directory fails, print error and exit
-    if (chdir(argv[1]) == -1)
-        return err("error: cd: cannot change directory to "), err(argv[1]), err("\n"), 1;
+    if (chdir(av[1]) == -1)
+        return err("error: cd: cannot change directory to "), err(av[1]), err("\n"), 1;
     return 0;
 }
 
@@ -33,16 +33,16 @@ void set_pipe(int has_pipe, int *fd, int end)
 }
 
 // Function to execute a command
-int exec(char **argv, int i, char **envp)
+int exec(char **av, int i, char **envp)
 {
     int has_pipe, fd[2], pid, status;
 
     // Check if the command includes a pipe
-    has_pipe = argv[i] && !strcmp(argv[i], "|");
+    has_pipe = av[i] && !strcmp(av[i], "|");
 
     // If the command is 'cd', execute it
-    if (!has_pipe && !strcmp(*argv, "cd"))
-        return cd(argv, i);
+    if (!has_pipe && !strcmp(*av, "cd"))
+        return cd(av, i);
 
     // If the command includes a pipe and creating the pipe fails, print error and exit
     if (has_pipe && pipe(fd) == -1)
@@ -53,16 +53,16 @@ int exec(char **argv, int i, char **envp)
 	err("error: fatal\n"), exit(1);
     if (!pid)
     {
-        argv[i] = 0;
+        av[i] = 0;
         // If the command includes a pipe, set write end of pipe, if it fail print error and exit
         set_pipe(has_pipe, fd, 1);
         // If the command is 'cd', execute it
-        if (!strcmp(*argv, "cd"))
-            exit(cd(argv, i));
+        if (!strcmp(*av, "cd"))
+            exit(cd(av, i));
         // Execute the command
-        execve(*argv, argv, envp);
+        execve(*av, av, envp);
         // If executing the command fails, print error and exit
-        err("error: cannot execute "), err(*argv), err("\n"), exit(1);
+        err("error: cannot execute "), err(*av), err("\n"), exit(1);
     }
 
     // Wait for the child process to finish
@@ -73,22 +73,23 @@ int exec(char **argv, int i, char **envp)
     return WIFEXITED(status) && WEXITSTATUS(status);
 }
 
-int main(int, char **argv, char **envp)
+int main(int ac, char **av, char **envp)
 {
+	(void)ac;
     int    i = 0, status = 0;
 
     // Loop through each following argument
-    while (argv[i])
+    while (av[i])
     {
         // Move the pointer to the next argument after the last delimeter / first argument
-    	argv += i + 1;
+    	av += i + 1;
     	i = 0;
         // Loop through each argument until a pipe or semicolon is found
-    	while (argv[i] && strcmp(argv[i], "|") && strcmp(argv[i], ";"))
+    	while (av[i] && strcmp(av[i], "|") && strcmp(av[i], ";"))
 			i++;
         // If there are arguments, execute them
     	if (i)
-			status = exec(argv, i, envp);
+			status = exec(av, i, envp);
     }
     return status;
 }
