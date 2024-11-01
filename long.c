@@ -1,7 +1,7 @@
-#include <string.h>
 #include <unistd.h>
-#include <sys/wait.h>
+#include <string.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 
 void err(char *str)
 {

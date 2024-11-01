@@ -1,7 +1,7 @@
-#include <string.h>
 #include <unistd.h>
-#include <sys/wait.h>
+#include <string.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 void err(char *str) { while (*str) write(2, str++, 1); }
 int cd(char **av, int i) {
     if (i != 2) return err("error: cd: bad arguments\n"), 1;
@@ -17,8 +17,7 @@ int exec(char **av, int i, char **envp) {
     if (!has_pipe && !strcmp(*av, "cd")) return cd(av, i);
     if (has_pipe && pipe(fd) == -1) err("error: fatal\n"), exit(1);
     if ((pid = fork()) == -1) err("error: fatal\n"), exit(1);
-    if (!pid)
-    {
+    if (!pid) {
         av[i] = 0;
         set_pipe(has_pipe, fd, 1);
         if (!strcmp(*av, "cd")) exit(cd(av, i));
@@ -32,8 +31,7 @@ int exec(char **av, int i, char **envp) {
 int main(int ac, char **av, char **envp) {
     (void)ac;
     int i = 0, status = 0;
-    while (av[i])
-    {
+    while (av[i]) {
 		av += i + 1;
         for (i = 0; av[i] && strcmp(av[i], "|") && strcmp(av[i], ";"); i++);
         if (i) status = exec(av, i, envp);
