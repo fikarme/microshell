@@ -1,4 +1,10 @@
-// /bin/ls "|" /usr/bin/grep microshell ";" /bin/echo i love my microshell
+// ./microshell /bin/ls "|" /usr/bin/grep microshell ";" /bin/echo i love my microshell
+// microshell
+// i love my microshell
+
+// ./microshell /bin/echo WOOT "; /bin/echo NOPE;" "; ;" ";" /bin/echo YEAH
+// WOOT ; /bin/echo NOPE; ; ;
+// YEAH
 
 #include <unistd.h>
 #include <stdlib.h>
