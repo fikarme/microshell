@@ -20,8 +20,9 @@ int cd(char **av, int i)
 
 void set_pipe(int has_pipe, int *fd, int end)
 {
-	if (has_pipe && (dup2(fd[end], end) == -1 || close(fd[0]) == -1 || close(fd[1]) == -1))
-		err("error: fatal\n"), exit(1);
+	if (has_pipe)
+		if (dup2(fd[end], end) == -1 || close(fd[0]) == -1 || close(fd[1]) == -1)
+			err("error: fatal\n"), exit(1);
 }
 
 int	exec(char **av, int i, char **envp)
