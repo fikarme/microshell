@@ -3,15 +3,6 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-// Every Child Sees Exec Magic
-void	err(char *str);
-int		cd(char **av, int i); // CDE Check Directory Exists // C:2 D:chdir E:err
-void	set_pipe(int has_pipe, int *fd, int end); // Pipe the Right End 
-int		exec(char **av, int i, char **envp); // Execute Pipes and Children
-// int	main(int ac, char **av, char **envp)
-
-// /bin/ls "|" /usr/bin/grep microshell ";" /bin/echo i love my microshell
-
 void err(char *str)
 {
     while (*str)

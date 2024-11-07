@@ -6,6 +6,7 @@
 // WOOT ; /bin/echo NOPE; ; ;
 // YEAH
 
+//USSS
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,4 +21,3 @@ void	set_pipe(int has_pipe, int *fd, int end);
 // EPC execute pipes children
 int		exec(char **av, int i, char **envp); 
 //int	main(int ac, char **av, char **envp)
-
