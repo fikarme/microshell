@@ -3,7 +3,7 @@ int exec(char **av, int i, char **envp){
     int status = 0;
     int pid = 0;
     int fd[2];
-    has_pipe = av[1] && !strcmp(av[i], "|");
+    has_pipe = av[i] && !strcmp(av[i], "|");
     if (!has_pipe && !strcmp(*av, "cd"))
         return cd(av, i);
     if (has_pipe && pipe(fd) == -1)

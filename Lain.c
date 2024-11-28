@@ -4,7 +4,15 @@
 //PRE pipe the right end
 //EPC exec pipe child
 
-//clang -Wall -Wextra -Werror -o microshell allahuakbar.c
+//clang -Wall -Wextra -Werror -o microshell Lain.c
+
+// ./microshell /bin/ls "|" /usr/bin/grep microshell ";" /bin/echo i love my microshell
+// microshell
+// i love my microshell
+
+// ./microshell /bin/echo WOOT "; /bin/echo NOPE;" "; ;" ";" /bin/echo YEAH
+// WOOT ; /bin/echo NOPE; ; ;
+// YEAH
 
 #include <unistd.h>
 #include <string.h>
@@ -57,16 +65,6 @@ int exec(char **av, int i, char **envp){
     set_pipe(has_pipe, fd, 0);
     return WIFEXITED(status) && WEXITSTATUS(status);
 }
-
-//clang -Wall -Wextra -Werror -o microshell Lain.c
-
-// ./microshell /bin/ls "|" /usr/bin/grep microshell ";" /bin/echo i love my microshell
-// microshell
-// i love my microshell
-
-// ./microshell /bin/echo WOOT "; /bin/echo NOPE;" "; ;" ";" /bin/echo YEAH
-// WOOT ; /bin/echo NOPE; ; ;
-// YEAH
 
 int main(int ac, char **av, char **envp){
     (void)ac;
