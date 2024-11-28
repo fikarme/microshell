@@ -1,9 +1,3 @@
-//USSS
-//every child sees exec magic
-//CDE Check Directory Exists
-//PRE pipe the right end
-//EPC exec pipe child
-
 //clang -Wall -Wextra -Werror -o microshell Lain.c
 
 // ./microshell /bin/ls "|" /usr/bin/grep microshell ";" /bin/echo i love my microshell
@@ -14,11 +8,16 @@
 // WOOT ; /bin/echo NOPE; ; ;
 // YEAH
 
+//USSS
+//every child sees exec magic
+//CDE Check Directory Exists
+//PRE pipe the right end
+//EPC exec pipe child
+
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-
 
 void err(char *s){
     while(*s)
